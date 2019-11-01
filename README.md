@@ -2,4 +2,4 @@
 
 Can you find the little dog in the wild forests of the Pacific Northwest?
 
-Clone and run `python3 adv.py` to play.
+Fork, clone and run `python3 adv.py` to play.
