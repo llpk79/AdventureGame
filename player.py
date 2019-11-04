@@ -1,5 +1,4 @@
-# Write a class to hold player information, e.g. what room they are in
-# currently.
+# Write a class to hold player information, e.g. what room they are in currently.
 import random
 import sys
 from room import Arena
@@ -37,6 +36,7 @@ class Player(object):
 
         :var args: str the position to move to
         """
+        # If the player has asked to move without providing a direction.
         if not args[0]:
             print("Please tell me where you want to move. \n")
             print("Valid directions are 'n', 's', 'e', 'w'")
@@ -44,18 +44,27 @@ class Player(object):
             return
         direction = args[0][0]
         if direction in ['n', 's', 'e', 'w']:
+            # Returns None if no room exists where the player wants to go.
             valid_move = eval(f'self.current_room.to_{direction}')
             if valid_move:
+                # Remove the player from the current room.
                 self.current_room.characters.pop(self.name, None)
+                # Change the current room to the one desired.
                 self.current_room = valid_move
+                # Put the player in the new room.
                 self.current_room.characters[self.name] = self
+                # Deduct health according to the story.
+                if self.current_room.name == 'shallow_crossing':
+                    self.hp -= 10
+                # Tell the player about the new room.
                 self.print_position()
+                # If we're in The Bear's room, do that stuff.
                 if isinstance(valid_move, Arena):
                     valid_move.battle()
+            # If the player has asked to go somewhere that doesn't exist help 'em out.
             else:
                 ways = {'n': 'North', 's': 'South', 'w': 'West', 'e': 'East'}
                 print(f"There is no path to the {ways[direction]}. \n")
-                # self.print_position()
 
     def print_position(self) -> None:
         """Print the current room and its description."""
@@ -67,6 +76,7 @@ class Player(object):
         Mark items seen as seen.
         :var args: unused
         """
+        # Check to see if the lights are on.
         if self.current_room.light or any(item.is_light and item.active for item in self.items_.values()):
             self.current_room.light = True
             if self.current_room.items_:
@@ -89,12 +99,17 @@ class Player(object):
             print("Please tell me what you want to get. \n")
             return
         item_name = args[0][0]
+        # If the item is in this room and we have looked around.
         if item_name in self.current_room.items_ and self.current_room.items_[item_name].seen:
             item = self.current_room.items_[item_name]
+            # Check that the Item won't cause us to exceed the weight limit.
             if self.weight + item.weight <= self.weight_limit:
+                # Add the item to the inventory
                 self.items_[item.name] = item
                 self.weight += item.weight
+                # Remove the item from the room.
                 self.current_room.items_.pop(item.name, None)
+                # Do whatever items do.
                 item.on_get(self)
             else:
                 print(f"I'm carrying too much weight to add {item.name}")
@@ -113,13 +128,15 @@ class Player(object):
             print("Please tell me what you want to drop. \n")
             return
         item_name = args[0][0]
+        # make sure we have this thing.
         if item_name in self.items_:
             item = self.items_[item_name]
-            if item.name in self.items_:
-                self.items_.pop(item.name, None)
-                self.weight -= item.weight
-                self.current_room.items_[item.name] = item
-                print(f"I have dropped {item.name} \n")
+            # Drop it into nowhere
+            self.items_.pop(item.name, None)
+            self.weight -= item.weight
+            # Move it from nowhere into the current room.
+            self.current_room.items_[item.name] = item
+            print(f"I have dropped {item.name} \n")
         else:
             print(f"I don't have {'an' if item_name.startswith(('a', 'e', 'i', 'o', 'u')) else 'a'} {item_name} \n")
 
@@ -138,6 +155,7 @@ class Player(object):
 
         :var character: The character to attack.
         """
+        # If a ten sided die comes up odd, it's a hit.
         if random.randint(0, 10) & 1:
             character.hp -= self.attackpts
             if character.hp <= 0:
@@ -158,6 +176,7 @@ class Player(object):
             print("Please tell me what you want to use. \n")
             return
         item_name = args[0][0]
+        # Call item methods by matching strings.
         if item_name in self.items_:
             self.items_[item_name].active = True
         if 'key' in item_name:
@@ -174,7 +193,9 @@ class Player(object):
             else:
                 print("I don't see any dogs around here. \n")
         if 'berrie' in item_name:
-            self.items_[item_name].eat()
+            # Ensure the specific berry is in inventory.
+            if item_name in self.items_:
+                self.items_[item_name].eat()
 
     def _unlock_box(self, key_name: str) -> None:
         """Unlock a box in the room if Player has the correct color key.
@@ -182,11 +203,15 @@ class Player(object):
         :var key_name: the name of the key i.e. 'black_key'
         """
         color = key_name.split('_')[0]
+        # Check that the correct color box is in the current room.
         if eval(f"'{color}_lock_box' in self.current_room.items_"):
             box_name = f"{color}_lock_box"
+            # Check that the box has been seen and that the key is correct.
             if (self.current_room.items_[box_name].seen and
                     self.current_room.items_[box_name].key is self.items_[key_name]):
+                # Unlock the box.
                 self.current_room.items_[box_name].locked = False
+                # Add contents of box to the room.
                 for item in self.current_room.items_[box_name].items_.values():
                     self.current_room.items_[item.name] = item
                 print(f"I have unlocked the {box_name} \n")
@@ -202,7 +227,9 @@ class Player(object):
         #TODO: make game reset and start over.
         """
         for item in self.items_.values():
+            # Add inventory to current room.
             self.current_room.items_[item.name] = item
+        # End the game if the player dies.
         if not self.name == 'The Bear':
             print(f"{self.name} has died! Now littered about the area "
                   f"are {[item.name for item in self.items_.values()]} \n")
@@ -215,10 +242,12 @@ class Player(object):
 
         :var args: unused
         """
-        print(f"Current weight: {self.weight} / {self.weight_limit}")
+        print(f"{self.name} - Current Health: {self.hp}")
+        print(f"Current Weight: {self.weight} / {self.weight_limit}")
+        print("Items:")
         if self.items_:
             for item in self.items_.values():
-                print(f'Item: {item.name} - Weight: {item.weight}')
+                print(f'{item.name} - Weight: {item.weight}')
         else:
             print("I don't seem to have anything.")
         print()  # Blank line for display purposes.

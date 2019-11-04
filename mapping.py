@@ -151,7 +151,7 @@ black_lock_box.key = black_key
 rooms['cave'].items_[black_lock_box.name] = black_lock_box
 rooms['dense_forest'].items_[black_key.name] = black_key
 
-# Do the same with at red box.
+# Do the same with a red box.
 red_lock_box = Container('red_lock_box',
                          'A sturdy locked box. It is red.',
                          weight=50)
@@ -166,6 +166,7 @@ red_lock_box.items_[dog_treats.name] = dog_treats
 rooms['stevens_pass'].items_[red_key.name] = red_key
 rooms['river_delta'].items_[red_lock_box.name] = red_lock_box
 
+# Make pebbles and berries.
 pebbles = Pebbles('pebbles',
                   'Small round stones',
                   weight=2)

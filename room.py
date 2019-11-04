@@ -33,13 +33,17 @@ class Arena(Room):
     def battle(self):
         """A fight to the death!"""
         battle_q = deque()
+        # Add the player and bear to queue, have player attack first.
         for player in reversed(list(self.characters.keys())):
             battle_q.append(self.characters[player])
+
+        # Only battle if it's our first time here.
         if all(player.hp > 0 for player in battle_q):
             print("OMG!! A BEAR!!!\n")
         else:
             print("\nThis is where I fought that bear. And Won!! \n")
             return
+
         while not any(player.hp <= 0 for player in battle_q):
             attacker = battle_q.popleft()
             attackee = battle_q.popleft()
@@ -48,5 +52,6 @@ class Arena(Room):
             if any([attacker.hp <= 0, attackee.hp <= 0]):
                 break
 
+            # Add players back in reverse order.
             battle_q.append(attackee)
             battle_q.append(attacker)
