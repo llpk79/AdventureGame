@@ -61,7 +61,7 @@ class SlingShot(Item):
     def shoot(self, character: Player) -> None:
         """Increase character attackpts to reflect use of sling shot.
 
-        calls owner._attack() then decreases attackpts to baseline.
+        calls owner._attack(character) then decreases attackpts to baseline.
         :var character: The character to attack
         """
         self.owner.attackpts += 30
@@ -134,6 +134,8 @@ class Berries(Item):
     def eat(self):
         """Consume berries, feel better."""
         old = self.owner.hp
+        # Remove berries from inventory and increase hp.
         self.owner.hp += 15
+        self.owner.weight -= self.weight
         self.owner.items_.pop(self.name, None)
         print(f"{self.owner.name} health has gone from {old} to {self.owner.hp} \n")
