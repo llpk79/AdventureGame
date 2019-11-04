@@ -196,6 +196,8 @@ class Player(object):
             # Ensure the specific berry is in inventory.
             if item_name in self.items_:
                 self.items_[item_name].eat()
+            else:
+                print(f"I don't have any {item_name}")
 
     def _unlock_box(self, key_name: str) -> None:
         """Unlock a box in the room if Player has the correct color key.
