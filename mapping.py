@@ -26,7 +26,7 @@ rooms = {
                        "A short climb West looks like the entrance to a cave. \nThe trail continues both North and "
                        "South. \nHead back to the valley views to the East"),
 
-    'kendal_catwalk': Room("A narrow walkway juts out from the shear cliff, to fall hear is certain death.",
+    'kendal_catwalk': Room("A narrow walkway juts out from the shear cliff, to fall here is certain death.",
                            "An avalanche has blocked your path. \nYou must return to the South"),
 
     'section_k': Room("This difficult trail seems to go on forever.",
