@@ -158,10 +158,10 @@ class Player(object):
         # If a ten sided die comes up odd, it's a hit.
         if random.randint(0, 10) & 1:
             character.hp -= self.attackpts
-            if character.hp <= 0:
-                character.die()
             print(f"{self.name} {'shoots' if self.has_slingshot and self.has_pebbles else 'hits'} "
                   f"{character.name}! Their health is now {character.hp} \n")
+            if character.hp <= 0:
+                character.die()
         else:
             print(f"{self.name} missed! \n")
 
@@ -192,9 +192,9 @@ class Player(object):
                 sys.exit()
             else:
                 print("I don't see any dogs around here. \n")
-        if 'berrie' in item_name:
+        if 'berrie' in item_name or 'unicorn' in item_name:
             # Ensure the specific berry is in inventory.
-            if item_name in self.items_:
+            if self.items_[item_name].active:
                 self.items_[item_name].eat()
             else:
                 print(f"I don't have any {item_name}")

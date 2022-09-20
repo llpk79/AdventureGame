@@ -26,7 +26,7 @@ rooms = {
                        "A short climb West looks like the entrance to a cave. \nThe trail continues both North and "
                        "South. \nHead back to the valley views to the East"),
 
-    'kendal_catwalk': Room("A narrow walkway juts out from the shear cliff, to fall hear is certain death.",
+    'kendal_catwalk': Room("A narrow walkway juts out from the shear cliff, to fall here is certain death.",
                            "An avalanche has blocked your path. \nYou must return to the South"),
 
     'section_k': Room("This difficult trail seems to go on forever.",
@@ -113,6 +113,7 @@ rooms['shallow_crossing'].to_e = rooms['bridge_crossing']
 rooms['river_delta'].to_e = rooms['river_bank']
 
 rooms['doggo'].to_s = rooms['bridge_crossing']
+
 rooms['bridge_crossing'].to_n = rooms['doggo']
 rooms['bridge_crossing'].to_w = rooms['shallow_crossing']
 
@@ -149,6 +150,11 @@ black_key = Item('black_key',
 black_lock_box.key = black_key
 
 # Hide box and key.
+unicorn = Berries('unicorn',
+               'A magical unicorn with healing powers',
+               weight=0)
+
+rooms['dense_forest'].items_[unicorn.name] = unicorn
 rooms['cave'].items_[black_lock_box.name] = black_lock_box
 rooms['dense_forest'].items_[black_key.name] = black_key
 

@@ -128,7 +128,8 @@ class Berries(Item):
 
         :var player: The proud owner of new berries.
         """
-        self.owner = player
+        if self.name != 'unicorn':
+            self.owner = player
         super().on_get()
 
     def eat(self):
