@@ -158,10 +158,10 @@ class Player(object):
         # If a ten sided die comes up odd, it's a hit.
         if random.randint(0, 10) & 1:
             character.hp -= self.attackpts
-            if character.hp <= 0:
-                character.die()
             print(f"{self.name} {'shoots' if self.has_slingshot and self.has_pebbles else 'hits'} "
                   f"{character.name}! Their health is now {character.hp} \n")
+            if character.hp <= 0:
+                character.die()
         else:
             print(f"{self.name} missed! \n")
 

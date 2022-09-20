@@ -113,6 +113,7 @@ rooms['shallow_crossing'].to_e = rooms['bridge_crossing']
 rooms['river_delta'].to_e = rooms['river_bank']
 
 rooms['doggo'].to_s = rooms['bridge_crossing']
+
 rooms['bridge_crossing'].to_n = rooms['doggo']
 rooms['bridge_crossing'].to_w = rooms['shallow_crossing']
 
