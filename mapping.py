@@ -150,6 +150,11 @@ black_key = Item('black_key',
 black_lock_box.key = black_key
 
 # Hide box and key.
+unicorn = Berries('unicorn',
+               'A magical unicorn with healing powers',
+               weight=0)
+
+rooms['dense_forest'].items_[unicorn.name] = unicorn
 rooms['cave'].items_[black_lock_box.name] = black_lock_box
 rooms['dense_forest'].items_[black_key.name] = black_key
 

@@ -192,9 +192,9 @@ class Player(object):
                 sys.exit()
             else:
                 print("I don't see any dogs around here. \n")
-        if 'berrie' in item_name:
+        if 'berrie' in item_name or 'unicorn' in item_name:
             # Ensure the specific berry is in inventory.
-            if item_name in self.items_:
+            if self.items_[item_name].active:
                 self.items_[item_name].eat()
             else:
                 print(f"I don't have any {item_name}")

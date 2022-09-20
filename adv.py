@@ -100,6 +100,7 @@ def main(rooms: dict) -> None:
     bear = game.set_player('The Bear', attackpts=20)
     bear.current_room = rooms['trail_east']
     rooms['trail_east'].characters[bear.name] = bear
+    rooms['dense_forest'].items_['unicorn'].owner = bear
     print(f"\nThe Adventure Begins! \nGood luck {game.player.name}!!")
 
     doggo = game.set_player('doggo')
